@@ -9,9 +9,12 @@ import cucumber.runner.TimeService;
 import cucumber.runtime.io.ResourceLoader;
 import cucumber.runtime.model.CucumberFeature;
 import cucumber.runtime.xstream.LocalizedXStreams;
+import cucumber.util.log.LoggerFactory;
 import gherkin.events.PickleEvent;
 import gherkin.pickles.Compiler;
 import gherkin.pickles.Pickle;
+import org.omg.SendingContext.RunTime;
+import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -25,6 +28,8 @@ import java.util.regex.Pattern;
  * This is the main entry point for running Cucumber features.
  */
 public class Runtime {
+
+    private static final Logger logger = LoggerFactory.getLogger(RunTime.class);
 
     final Stats stats; // package private to be avaiable for tests.
     private final UndefinedStepsTracker undefinedStepsTracker = new UndefinedStepsTracker();
@@ -91,6 +96,7 @@ public class Runtime {
      * This is the main entry point. Used from CLI, but not from JUnit.
      */
     public void run() throws IOException {
+        logger.info("Run started");
         // Make sure all features parse before initialising any reporters/formatters
         List<CucumberFeature> features = runtimeOptions.cucumberFeatures(resourceLoader, bus);
 
