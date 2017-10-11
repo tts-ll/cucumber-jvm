@@ -16,6 +16,7 @@ import cucumber.runtime.RuntimeOptions;
 import cucumber.runtime.StepDefinitionMatch;
 import cucumber.runtime.UndefinedStepDefinitionMatch;
 import cucumber.runtime.UnreportedStepExecutor;
+import cucumber.util.log.LoggerFactory;
 import gherkin.events.PickleEvent;
 import gherkin.pickles.Argument;
 import gherkin.pickles.PickleLocation;
@@ -24,6 +25,8 @@ import gherkin.pickles.PickleStep;
 import gherkin.pickles.PickleString;
 import gherkin.pickles.PickleTable;
 import gherkin.pickles.PickleTag;
+import org.omg.SendingContext.RunTime;
+import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,12 +34,15 @@ import java.util.Collections;
 import java.util.List;
 
 public class Runner implements UnreportedStepExecutor {
+    private static final Logger logger = LoggerFactory.getLogger(Runner.class);
+
     private final Glue glue;
     private final EventBus bus;
     private final Collection<? extends Backend> backends;
     private final RuntimeOptions runtimeOptions;
 
     public Runner(Glue glue, EventBus bus, Collection<? extends Backend> backends, RuntimeOptions runtimeOptions) {
+        logger.info("Starting cucumber.runner.Runner...\n");
         this.glue = glue;
         this.bus = bus;
         this.runtimeOptions = runtimeOptions;

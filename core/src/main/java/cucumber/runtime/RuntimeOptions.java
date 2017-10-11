@@ -16,9 +16,11 @@ import cucumber.runtime.model.PathWithLines;
 import cucumber.runtime.table.TablePrinter;
 import cucumber.util.FixJava;
 import cucumber.util.Mapper;
+import cucumber.util.log.LoggerFactory;
 import gherkin.GherkinDialect;
 import gherkin.GherkinDialectProvider;
 import gherkin.IGherkinDialectProvider;
+import org.slf4j.Logger;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -40,6 +42,8 @@ import static java.util.Collections.unmodifiableList;
 
 // IMPORTANT! Make sure USAGE.txt is always uptodate if this class changes.
 public class RuntimeOptions {
+    private static final Logger logger = LoggerFactory.getLogger(RuntimeOptions.class);
+
     public static final String VERSION = ResourceBundle.getBundle("cucumber.version").getString("cucumber-jvm.version");
     public static final String USAGE_RESOURCE = "/cucumber/api/cli/USAGE.txt";
 
@@ -311,6 +315,7 @@ public class RuntimeOptions {
 
     public List<CucumberFeature> cucumberFeatures(ResourceLoader resourceLoader, EventBus bus) {
         List<CucumberFeature> features = load(resourceLoader, featurePaths, System.out);
+        logger.info("Feature paths: " + featurePaths);
         getPlugins(); // to create the formatter objects
         bus.send(new TestRunStarted(bus.getTime()));
         for (CucumberFeature feature : features) {
