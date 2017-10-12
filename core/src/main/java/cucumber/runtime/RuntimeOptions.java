@@ -42,7 +42,7 @@ import static java.util.Collections.unmodifiableList;
 
 // IMPORTANT! Make sure USAGE.txt is always uptodate if this class changes.
 public class RuntimeOptions {
-    private static final Logger logger = LoggerFactory.getLogger(RuntimeOptions.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RuntimeOptions.class);
 
     public static final String VERSION = ResourceBundle.getBundle("cucumber.version").getString("cucumber-jvm.version");
     public static final String USAGE_RESOURCE = "/cucumber/api/cli/USAGE.txt";
@@ -315,7 +315,7 @@ public class RuntimeOptions {
 
     public List<CucumberFeature> cucumberFeatures(ResourceLoader resourceLoader, EventBus bus) {
         List<CucumberFeature> features = load(resourceLoader, featurePaths, System.out);
-        logger.info("Feature paths: {}", featurePaths);
+        LOGGER.info("Feature paths: {}", featurePaths);
         getPlugins(); // to create the formatter objects
         bus.send(new TestRunStarted(bus.getTime()));
         for (CucumberFeature feature : features) {
@@ -410,6 +410,7 @@ public class RuntimeOptions {
         if (plugin instanceof Formatter && bus != null) {
             Formatter formatter = (Formatter) plugin;
             formatter.setEventPublisher(bus);
+            LOGGER.info("Formatter used is: {}", plugin.getClass());
         }
     }
 
